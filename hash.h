@@ -1,35 +1,41 @@
 #include<stdlib.h>
 #include<memory.h>
-static int orihashnum=0;
-static inline int * orihash_init(int num)
+typedef struct{
+	char flag;
+	int val;
+}orihash;
+#define ORIHASH_EXIST 0x01
+#define orihash_isexist(hash,key)	(hash[key]->flag & ORIHASH_EXIST)
+static inline orihash * orihash_init(int num)
 {
 	if(num<=0)	return NULL;
 	orihashnum = num;
-	int * ret = (int *)malloc(2*num*sizeof(int));
-	memset(ret,0,2*num*sizeof(int));
+	orihash * ret = (orihash *)malloc(orihashnum*sizeof(orihash));
+	memset(ret,0,orihashnum*sizeof(orihash));
 	return ret;
 } 
-static inline int orihash_add(int *hash,int key,int val)
+static inline int orihash_add(orihash *hash ,int key ,int val)
 {
-	key+=orihashnum;
-	if(hash[key]){
+	if(orihash_isexist(hash,key)){
 		printf("Error:hash exist,add fail.\n");
 		return 1;
 	}
-	if(val) hash[key]=val;
-	else hash[key]=1;
+	hash[key]->val=val;
+	hash[key]->flag |= ORIHASH_EXIST;
 	return 0;
 }
-static inline int orihash_find(int *hash,int key)
+static inline int orihash_find(orihash *hash ,int key ,int *val)
 {
-	key+=orihashnum;
-	if(key<0)	return 0;
-	return hash[key];
+	if(!orihash_isexist(hash,key))	return 1;
+	else *val = hash[key]->val;
+	return 0;
 }
-static inline int orihash_remove(int *hash,int key)
+static inline int orihash_remove(orihash *hash ,int key)
 {
-	key+=orihashnum;
-	if(key <0)	return 1;
-	hash[key]=0;
+	if(!orihash_isexist(hash,key){
+		printf("Warning:key does not in hashtable");
+		return 1;
+	}
+	hash[key]->flag &= ~ORIHASH_EXIST;
 	return 0;
 }
