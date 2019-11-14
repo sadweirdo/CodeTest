@@ -1,46 +1,75 @@
 #include<stdlib.h>
+#include<stdio.h>
 #include<memory.h>
-typedef struct{
+
+struct hashelement{
 	char flag;
 	int val;
-}orihash;
-#define ORIHASH_EXIST 0x01
-#define orihash_isexist(hash,key)	(hash[key].flag & ORIHASH_EXIST)
-static int orihashlength;
+};
 
-static inline orihash * orihash_init(int num)
+typedef struct hashelement** Hashtable;
+
+#define HASH_EXIST 0x01
+#define HASH_MAXSIZE 4096
+
+#define POSITIVEINT 0x7FFFFFFF
+#define hash_isexist(hashtable,index)    (hashtable[index]->flag & HASH_EXIST)
+static inline int hash(int key)
 {
-	if(num<=0)	return NULL;
-	orihashlength = num;
-	orihash * ret = (orihash *)malloc(orihashlength*sizeof(orihash));
-	memset(ret,0,orihashlength*sizeof(orihash));
+	long long num = key;
+	return (int)(((num*31) & POSITIVEINT) % HASH_MAXSIZE);
+}
+
+#define DECLARE_HASH(name)	Hashtable name = hash_init();
+static inline Hashtable hash_init()
+{
+	Hashtable ret;
+	ret = (Hashtable)malloc(HASH_MAXSIZE*sizeof(struct hashelement *));
+	memset(ret,0,HASH_MAXSIZE*sizeof(struct hashelement *));
 	return ret;
 } 
-static inline int orihash_add(orihash *hash ,int key ,int val)
+
+static inline int hash_add(Hashtable hashtable ,int key ,int val)
 {
-    key %= orihashlength;
-	if(orihash_isexist(hash,key)){
-		printf("Warning:Key:[%d]-Val:[%d] is exist,Val:[%d] add fail.\n",key,hash[key].val,val);
-		return 0;
-	}
-	hash[key].val=val;
-	hash[key].flag |= ORIHASH_EXIST;
-	return 0;
-}
-static inline int orihash_remove(orihash *hash ,int key)
-{
-    key %= orihashlength;
-	if(!orihash_isexist(hash,key)){
-		printf("Warning:key does not in hashtable");
+    int index = hash(key);
+	if(!hashtable[index])	hashtable[index] = (struct hashelement *)malloc(sizeof(struct hashelement));
+	else if(hash_isexist(hashtable,index)){
+		printf("Warning:Key:[%d]-Val:[%d] is exist,Val:[%d] add fail.\n",key,hashtable[index]->val,val);
 		return 1;
 	}
-	hash[key].flag &= ~ORIHASH_EXIST;
+	
+	hashtable[index]->val=val;
+	hashtable[index]->flag |= HASH_EXIST;
 	return 0;
 }
-static inline int orihash_find(orihash *hash ,int key ,int *val)
+
+static inline int hash_mod(Hashtable hashtable ,int key ,int val)
 {
-    key %= orihashlength;
-	if(!orihash_isexist(hash,key))	return 0;
-	else if(val)    *val = hash[key].val;
+    int index = hash(key);
+	if(!hashtable[index] || !hash_isexist(hashtable,index)){
+		printf("Error:key does not in hashtable");
+		return 1;
+	}
+	
+	hashtable[index]->val=val;
+	return 0;
+} 
+
+static inline int hash_remove(Hashtable hashtable ,int key)
+{
+     int index = hash(key);
+	if(!hashtable[index] || !hash_isexist(hashtable,index)){
+		printf("Warning:key does not in hashtable");
+		return 0;
+	}
+	hashtable[index]->flag &= ~HASH_EXIST;
+	return 0;
+}
+
+static inline int hash_find(Hashtable hashtable ,int key ,int *val)
+{
+    int index = hash(key);
+	if(!hashtable[index] || !hash_isexist(hashtable,index))	return 0;
+	else if(val)    *val = hashtable[index]->val;
 	return 1;
 }
