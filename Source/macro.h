@@ -25,3 +25,26 @@
 #define min(a,b) ((a)>(b)?(b):(a))
 
 #define exchange(a,b,tmp)	{(tmp)=(a); (a)=(b); (b)=(tmp);}
+
+#define num_decdigits(x) (numdigits(x,1))
+#define num_hexdigits(x) (numdigits(x,2))
+/* scalegflag: 1-decimal    2-hexadecimal */
+static inline int numdigits(long long num, char scaleflag)
+{
+	int count = 1;
+	int scale;
+	switch(scaleflag){
+		case 1:
+			scale = 10;
+			break;
+		case 2:
+			scale = 16;
+			break;
+		default:
+			prt("Error: invalid scaleflag input");
+			return 0;
+	}
+	
+	for(int tmp=num ;tmp/=scale ;count++);
+	return count;
+}
