@@ -1,0 +1,8 @@
+#include<iostream>
+int main()
+{
+	int currVal = 0, val = 0;
+	if(std::cin >> currVal){
+		int cnt = 1;
+		while(std::cnt >> val){
+		if(val == currVal)
