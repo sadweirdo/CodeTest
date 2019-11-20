@@ -24,10 +24,4 @@ int isPalindrome(int x)
 	
 	return num == x || num/10 == x;
 }
-int main()
-{
-    int c;
-    while(scanf("%d",&c)){
-        printf("%d\n",isPalindrome(c));
-    }
- } 
+
