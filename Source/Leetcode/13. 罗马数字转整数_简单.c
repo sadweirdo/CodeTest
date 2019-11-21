@@ -1,8 +1,12 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include"../macro.h"
+#include"../string.h"
 
 int romanToInt(char * s)
 {
     int roman[128]={0};
-    int index = strlen(s);
+    int index = str_len(s);
     int sum=0,flag=1;
     roman['I']=1;roman['V']=5;roman['X']=10;roman['L']=50;
 	roman['C']=100;roman['D']=500;roman['M']=1000;

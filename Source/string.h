@@ -1,4 +1,4 @@
-
+/* 依赖macro.h */
 static char *INT_MIN_STRING = "2147483648";
 static char *INT_MAX_STRING = "2147483647";
 
@@ -23,7 +23,16 @@ static inline int str_len(char *string)
 	for(i=0 ;string[i] ;i++);
 	return i;
 }
-
+static inline int mem_cpy(char *dst ,char *str ,int count)
+{
+	if(!dst || !str) return 0;
+	int num = str_len(str);
+	num = min(num,count);
+	for(int i=0 ;i<num ;i++)
+		dst[i] = str[i];
+	
+	return num;
+}
 /* 数字字符串比较 */
 int numstr_cmp(char *str1,char *str2)
 {

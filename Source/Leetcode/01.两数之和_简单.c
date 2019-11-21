@@ -1,3 +1,5 @@
+#include<stdio.h>
+#include<stdlib.h>
 #include"../macro.h"
 #include"../hash.h"
 int* twoSum(int* nums, int numsSize, int target, int* returnSize) 

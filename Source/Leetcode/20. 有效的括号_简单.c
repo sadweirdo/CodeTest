@@ -1,7 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
 #include"../macro.h"
+#include"../string.h"
+
 #define TYPEC int
 #include"../array.h"
 
@@ -11,7 +12,7 @@ int isValid(char * s){
 	hash['['] = hash[']'] = 2;
 	hash['{'] = hash['}'] = 3;
 	
-	int num = strlen(s);
+	int num = str_len(s);
 	if(!num)   return 1;
 	Stack *stack = stack_init(num);
 	for(int i = 0 ;i < num ;i++){
