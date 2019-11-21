@@ -18,7 +18,7 @@ int iteratesearch(int *num,int low,int high,int target,int *ret)
 	*ret = left;
 	return 0;
 } 
-int searchInsert1(int* nums, int numsSize, int target)
+int searchInsert(int* nums, int numsSize, int target)
 {
     int index,rc;
     rc = iteratesearch(nums,0,numsSize-1,target,&index);
@@ -40,7 +40,7 @@ void binarysearch(int *num,int low,int high,int target,int *ret)
     else
         binarysearch(num,mid+1,high,target,ret);
 }
-int searchInsert2(int* nums, int numsSize, int target)
+int searchInsert(int* nums, int numsSize, int target)
 {
     int index,insert;
     binarysearch(nums,0,numsSize-1,target,&insert);

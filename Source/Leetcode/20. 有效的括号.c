@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include"../macro.h"
+#define TYPEC int
+#include"../array.h"
+
+int isValid(char * s){
+    int hash[128]={0};
+	hash['('] = hash[')'] = 1;
+	hash['['] = hash[']'] = 2;
+	hash['{'] = hash['}'] = 3;
+	
+	int num = strlen(s);
+	if(!num)   return 1;
+	Stack *stack = stack_init(num);
+	for(int i = 0 ;i < num ;i++){
+		if(s[i] == ')' || s[i] == ']' || s[i] == '}'){
+			if(stack_next(stack) != hash[s[i]])
+				return 0;
+			stack_remove(stack,NULL);
+		}else
+			stack_add(stack,hash[s[i]]);
+	}
+	if(stack_size(stack))  return 0;
+	return 1;
+}
+int main()
+{
+    char *s="";
+    prtd(isValid(s)); 
+}
