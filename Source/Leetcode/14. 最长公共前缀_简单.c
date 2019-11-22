@@ -103,13 +103,21 @@ char * longestCommonPrefix(char ** strs, int strsSize)
     int low = 0 ,high = min-1>0?min-1:0 ,mid;
     while(low < high){
         mid = (low + high)/2;
-        if(isprefix(strs,strsSize,mid)){
+        if(isprefix(strs,strsSize,mid))
             low = mid+1;
-        }else{
+        else
             high = mid;
-        }
-    }
-    int num = isprefix(strs,strsSize,low)? low+1:low;
+	}
+		/*	高效解法如下，可无需再判断low,high代表的位置的数据是否有效 */
+	/*while(low<=high){
+		if(isprefix(strs,strsSize,mid))
+            low = mid+1;
+        else
+            high = mid-1; 
+	}	
+	 int num = (low+high)/2;// =high也一样，因为循环结束时high只可能比low低1，因此算式值总为high。 
+	 */
+    int num = isprefix(strs,strsSize,low)? low+1:low; 
     char *s = (char *)malloc(num+1);
     mem_cpy(s,*strs,num);
     s[num]='\0';
