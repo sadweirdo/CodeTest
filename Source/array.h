@@ -1,9 +1,9 @@
 
 typedef struct{
-	int size;
-	int head,tail; //tail´æ·Å£¬headÉ¾³ı 
-	int length;
-	TYPEC array[0];
+	int size;		//æ•°æ®æ•°é‡
+	int head,tail; //é˜Ÿåˆ—ç”¨tailå­˜æ”¾ï¼Œheadè¡¨é˜Ÿå¤´ã€‚å †æ ˆç”¨tailå­˜æ”¾ï¼Œtailè¡¨æ ˆé¡¶
+	int length;	//æ€»é•¿åº¦
+	TYPEC array[0];	//æ ¹æ®åˆå§‹åŒ–çš„lengthåŠ¨æ€ç”³è¯·
 }oriArray;
 typedef oriArray Queue;
 typedef oriArray Stack;
@@ -38,7 +38,7 @@ static inline int oriArray_add_head(oriArray *array, TYPEC data)
 	if(oriArray_sizeok(array) || array->size==array->length)	
 		return 1;
 	
-    array->head = oriArray_location(array->head,-1,array->length);//ÒòÎªhead¸¨Öútail£¬Òò´ËheadÏÈÒÆ¶¯ÔÚÌîÊı¾İ£¬²»»áÓ°Ïì´óĞ¡¼ÆËã 
+    array->head = oriArray_location(array->head,-1,array->length);//å› ä¸ºheadè¾…åŠ©tailï¼Œå› æ­¤headå…ˆç§»åŠ¨åœ¨å¡«æ•°æ®ï¼Œä¸ä¼šå½±å“å¤§å°è®¡ç®— 
 	array->array[array->head] = data;
 	array->size++;
 	return 0;
@@ -54,7 +54,7 @@ static inline int oriArray_remove_head(oriArray *array, TYPEC *data)
 		
 	if(data)
 		*data = array->array[array->head];
-	array->array[array->head]=0;	//ÒòÎªheadÏÈÒÆ¶¯ÔÙÌî³ä£¬ËùÒÔÉ¾³ıÊ±ÏÈÉ¾³ıÔÙÒÆ¶¯ 
+	array->array[array->head]=0;	//å› ä¸ºheadå…ˆç§»åŠ¨å†å¡«å……ï¼Œæ‰€ä»¥åˆ é™¤æ—¶å…ˆåˆ é™¤å†ç§»åŠ¨ 
 	array->size--;
 	array->head = oriArray_location(array->head,1,array->length);
 	return 0;

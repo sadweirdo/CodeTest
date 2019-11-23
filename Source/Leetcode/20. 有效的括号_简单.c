@@ -26,6 +26,27 @@ int isValid(char * s){
 	if(stack_size(stack))  return 0;
 	return 1;
 }
+/*	优化哈希 */
+int isValid(char * s){
+    int hash[128]={0};
+	hash[')'] = '(';
+	hash[']'] = '[';
+	hash['}'] = '{';
+	
+	int num = str_len(s);
+	if(!num)   return 1;
+	Stack *stack = stack_init(num);
+	for(int i = 0 ,tmp;i < num ;i++){
+		if(tmp = hash[s[i]]){
+			if(stack_next(stack) != tmp)
+				return 0;
+			stack_remove(stack,NULL);
+		}else
+			stack_add(stack,s[i]);
+	}
+	if(stack_size(stack))  return 0;
+	return 1;
+}
 int main()
 {
     char *s="";

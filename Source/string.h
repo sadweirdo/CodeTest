@@ -45,7 +45,7 @@ int numstr_cmp(char *str1,char *str2)
     if(cnt1 > cnt2)    return 1;
     else if(cnt1 < cnt2)    return -1;
     
-    return str_cmp(str1,str2);
+    return str_cmp(str1,str2);//位数一样则进行字符串比较
 }
 
 /* 32位有符号十进制数值转化为字符串 */

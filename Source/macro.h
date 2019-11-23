@@ -26,6 +26,7 @@
 
 #define num_decdigits(x) (numdigits(x,1))
 #define num_hexdigits(x) (numdigits(x,2))
+
 /* scalegflag: 1-decimal    2-hexadecimal */
 static inline int numdigits(long long num, char scaleflag)
 {
