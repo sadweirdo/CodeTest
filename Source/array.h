@@ -1,13 +1,14 @@
-
+/*		需要#include前用#define指定TYPEC类型	*/
 typedef struct{
-	int size;		//数据数量
-	int head,tail; //队列用tail存放，head表队头。堆栈用tail存放，tail表栈顶
-	int length;	//总长度
-	TYPEC array[0];	//根据初始化的length动态申请
+	int size;				//数据数量
+	int head,tail; 		//head往低地址增长，tail往高地址增长
+	int length;			//总长度
+	TYPEC array[0];	//根据初始化的length动态申请，并
 }oriArray;
 typedef oriArray Queue;
 typedef oriArray Stack;
 
+/*		移动标尺，支持正负移动并防止越界	 */
 #define oriArray_location(index,num,length) \
 					(((index)+(length)+(num))%(length))
 
@@ -19,6 +20,8 @@ static inline oriArray * oriArray_init(int len)
 		p->length = len;
 	return p;
 }
+
+/*		确认传入的array结构正确	*/
 static inline int oriArray_sizeok(oriArray *array)
 {
     if(!array)   return 1;
@@ -26,27 +29,27 @@ static inline int oriArray_sizeok(oriArray *array)
     if(!num && array->size == array->length)    return 0;
     return num != array->size;
 }
+
+/*	返回array数据数量	*/
 static inline int oriArray_size(oriArray *array)
 {
     if(oriArray_sizeok(array))   return -1;
     return array->size;
 }
-/*	head turn to low address,tail turn to high address.			*/
-/*	so when we add data to head, the head index will decrease.	*/
+
+/*		往head添加元素，head向低地址增长，且为先移动再添加元素 */
 static inline int oriArray_add_head(oriArray *array, TYPEC data)
 {
 	if(oriArray_sizeok(array) || array->size==array->length)	
 		return 1;
 	
-    array->head = oriArray_location(array->head,-1,array->length);//因为head辅助tail，因此head先移动在填数据，不会影响大小计算 
+    array->head = oriArray_location(array->head,-1,array->length);//head先移动在填数据
 	array->array[array->head] = data;
 	array->size++;
 	return 0;
 }
 
-/*	remove function receive TYPEC variable or TYPEC pointer which have alloc memory	*/
-/*	when function receive a TYPEC pointer which is uninitialized ,					*/
-/*	function may have segment fault.												*/
+/*		删除head元素并将数据传入data参数	*/
 static inline int oriArray_remove_head(oriArray *array, TYPEC *data)
 {
 	if(oriArray_sizeok(array) || array->size==0)	
@@ -54,12 +57,13 @@ static inline int oriArray_remove_head(oriArray *array, TYPEC *data)
 		
 	if(data)
 		*data = array->array[array->head];
-	array->array[array->head]=0;	//因为head先移动再填充，所以删除时先删除再移动 
+	array->array[array->head]=0;	//删除时head先删除再移动 
 	array->size--;
 	array->head = oriArray_location(array->head,1,array->length);
 	return 0;
 }
 
+/*		向tail添加元素，tail先添加再往高地址移动，因此tail指向的位置总是为空(除非已满)	*/
 static inline int oriArray_add_tail(oriArray *array, TYPEC data)
 {
 	if(oriArray_sizeok(array) || array->size==array->length)	
@@ -71,12 +75,13 @@ static inline int oriArray_add_tail(oriArray *array, TYPEC data)
 	return 0;
 }
 
+/*		向tail删除元素，同时将元素传入data	*/
 static inline int oriArray_remove_tail(oriArray *array, TYPEC *data)
 {
 	if(oriArray_sizeok(array) || array->size==0)	
 		return 1;	
 		
-	array->tail = oriArray_location(array->tail,-1,array->length);
+	array->tail = oriArray_location(array->tail,-1,array->length);//先移动再删除
 	if(data)   *data = array->array[array->tail];
 	array->array[array->tail]=0;
 	array->size--;
@@ -84,6 +89,7 @@ static inline int oriArray_remove_tail(oriArray *array, TYPEC *data)
 	return 0;
 }
 
+/*	打印整个array，0-十进制，1-十六进制，2-字符串打印，3-字符打印	*/
 static inline void oriArray_prt(oriArray *array,char flag)
 {
 	printf("Array List:[");
@@ -101,6 +107,7 @@ static inline void oriArray_prt(oriArray *array,char flag)
 }
 
 /* Queue API */
+/*		队列使用tail指针存放数据，用head指针表示队列头	*/
 static inline Queue * queue_init(int len)
 {
 	return oriArray_init(len);
@@ -144,7 +151,9 @@ static inline void queue_prt_char(Queue *queue)
 	return oriArray_prt(queue,3);
 }
 
+
 /* Stack API */
+/*		堆栈用tail指针存放数据，用tail-1表示栈顶		*/
 static inline Stack * stack_init(int len)
 {
 	return oriArray_init(len);
