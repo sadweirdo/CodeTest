@@ -19,8 +19,7 @@ struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2){
         if(head==NULL){
             head = flag?l2:l1;
             tail = head;
-        }
-        else{
+        }	else{
             tail->next = flag?l2:l1;  
             tail = tail->next;
         }
