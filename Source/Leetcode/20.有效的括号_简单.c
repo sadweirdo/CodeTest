@@ -6,7 +6,8 @@
 #define TYPEC int
 #include"../array.h"
 
-int isValid(char * s){
+int isValid(char * s)
+{
     int hash[128]={0};
 	hash['('] = hash[')'] = 1;
 	hash['['] = hash[']'] = 2;
@@ -27,7 +28,8 @@ int isValid(char * s){
 	return 1;
 }
 /*	优化哈希 */
-int isValid(char * s){
+int isValid(char * s)
+{
     int hash[128]={0};
 	hash[')'] = '(';
 	hash[']'] = '[';
@@ -37,11 +39,9 @@ int isValid(char * s){
 	if(!num)   return 1;
 	Stack *stack = stack_init(num);
 	for(int i = 0 ,tmp;i < num ;i++){
-		if(tmp = hash[s[i]]){
-			if(stack_next(stack) != tmp)
-				return 0;
+		if(hash[s[i]] && stack_next(stack) == hash[s[i]])
 			stack_remove(stack,NULL);
-		}else
+		else
 			stack_add(stack,s[i]);
 	}
 	if(stack_size(stack))  return 0;

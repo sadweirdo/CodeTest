@@ -10,7 +10,8 @@
  */
 
 /*		一级指针解法		*/
-struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2){
+struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2)
+{
     struct ListNode* head=NULL,*tail;
     if(!l1 && !l2)  return NULL;
     while(l1&&l2){
