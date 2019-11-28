@@ -46,7 +46,5 @@ int kmp_searchstr(char *src, int srccnt, char *tar, int tarcnt)
 		printf("Error: next array create failed!\n");
 		return -1;
 	}
-    for(int j=0;j<tarcnt;j++)
-        printf("%d ",next[j]);
 	return _kmp_search(src,srccnt,tar,tarcnt,next);
 }

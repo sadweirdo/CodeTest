@@ -106,6 +106,20 @@ int violen_searchstr(char *srcstr, int srccnt, char *tarstr, int tarcnt)
     }
     return -1;
 }
+/*		暴力法一层循环实现		*/
+int violen_searchstr(char *srcstr, int srccnt, char *tarstr, int tarcnt)
+{
+    int i=0, j=0;
+    for( ;i<=srccnt-tarcnt && j<tarcnt;){
+        if(srcstr[i+j]!=tarstr[j]){
+            i++;j=0;
+        }
+        else
+            j++;
+    }
+    if(j == tarcnt)		return i;
+    return -1;
+}
 
 /*	KMP算法	*/
 /*		创建next数组，索引0开始		*/
@@ -151,7 +165,5 @@ int kmp_searchstr(char *src, int srccnt, char *tar, int tarcnt)
 		printf("Error: next array create failed!\n");
 		return -1;
 	}
-    for(int j=0;j<tarcnt;j++)
-        printf("%d ",next[j]);
 	return _kmp_search(src,srccnt,tar,tarcnt,next);
 }
