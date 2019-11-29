@@ -21,6 +21,8 @@
 
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)>(b)?(b):(a))
+#define max3{a,b,c) (max(max(a,b),c))
+#define min3{a,b,c) (min(min(a,b),c))
 
 #define exchange(a,b,tmp)	{(tmp)=(a); (a)=(b); (b)=(tmp);}
 
