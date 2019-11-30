@@ -99,24 +99,21 @@ int violen_searchstr(char *srcstr, int srccnt, char *tarstr, int tarcnt)
 	if(tarcnt == 0)	return 0;
 	if(tarcnt > srccnt)	return -1;
     for(int i=0, j ;i<=srccnt-tarcnt ;i++){
-        for(j=0 ;j<tarcnt ;j++){
+        for(j=0 ;j<tarcnt ;j++)
             if(srcstr[i+j]!=tarstr[j])	break;
-        }
 		if(j == tarcnt)		return i;
     }
     return -1;
 }
 /*		暴力法一层循环实现		*/
-int violen_searchstr(char *srcstr, int srccnt, char *tarstr, int tarcnt)
+int violen_searchstr2(char *srcstr, int srccnt, char *tarstr, int tarcnt)
 {
     int i=0, j=0;
-    for( ;i<=srccnt-tarcnt && j<tarcnt;){
+    for( ;i<=srccnt-tarcnt && j<tarcnt;)
         if(srcstr[i+j]!=tarstr[j]){
             i++;j=0;
-        }
-        else
+        }else
             j++;
-    }
     if(j == tarcnt)		return i;
     return -1;
 }
@@ -156,6 +153,7 @@ static inline int _kmp_search(char *src, int srccnt, char *tar, int tarcnt, int 
 	if(j == tarcnt)		return i-j;
 	else return -1;
 }
+/*		KMP算法接口		*/
 int kmp_searchstr(char *src, int srccnt, char *tar, int tarcnt)
 {
 	if(tarcnt == 0)	return 0;
@@ -166,4 +164,28 @@ int kmp_searchstr(char *src, int srccnt, char *tar, int tarcnt)
 		return -1;
 	}
 	return _kmp_search(src,srccnt,tar,tarcnt,next);
+}
+
+/*		字符串相加模板		*/
+char *addstring(char *a,char *b,int scale)
+{
+	int lena = str_len(a);
+	int lenb = str_len(b);
+	if(a == NULL || lena == 0) return b;
+    if(b == NULL || lenb == 0) return a;
+	
+	int x,y,tmp,cnt=0,carry=0;
+	char s[lena+lenb];
+	while(lena>0 || lenb>0 || carry >0){
+        x = --lena < 0 ? 0 : a[lena] - '0';
+        y = --lenb < 0 ? 0 : b[lenb]- '0';
+		tmp = x+y+carry;
+		s[cnt++] = tmp%scale + '0';
+		carry = tmp/scale;
+	}
+	char * ret = mlloc(char,cnt+1);
+	for(tmp=0;cnt; )
+		ret[tmp++]=s[--cnt];
+    ret[tmp] = '\0';
+	return ret;
 }
